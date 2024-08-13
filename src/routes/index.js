@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {View} from 'react-native';
 import AuthRoutes from './auth.routes';
 
 function Routes() {
