@@ -1,5 +1,5 @@
-import React, {useContext} from 'react';
-import {Platform} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {Platform, ActivityIndicator} from 'react-native';
 
 import {
   Background,
@@ -12,27 +12,52 @@ import {
 import {AuthContext} from '../../contexts/auth';
 
 export default function SignUp() {
-  const {user} = useContext(AuthContext);
+  const {signUp, loadingAuth} = useContext(AuthContext);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSignUp = () => {};
+  const handleSignUp = () => {
+    if (name === '' || email === '' || password === '') {
+      return;
+    }
+    signUp(email, password, name);
+  };
 
   return (
     <Background>
       <Container behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
         <AreaInput>
-          <Input placeholder="Nome" />
+          <Input
+            placeholder="Nome"
+            value={name}
+            onChangeText={text => setName(text)}
+          />
         </AreaInput>
 
         <AreaInput>
-          <Input placeholder="Seu e-mail" />
+          <Input
+            placeholder="Seu e-mail"
+            value={email}
+            onChangeText={text => setEmail(text)}
+          />
         </AreaInput>
 
         <AreaInput>
-          <Input placeholder="Sua senha" />
+          <Input
+            placeholder="Sua senha"
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry={true}
+          />
         </AreaInput>
 
         <SubmitButton onPress={handleSignUp}>
-          <SubmitText>Cadastrar</SubmitText>
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="#fff" />
+          ) : (
+            <SubmitText>Cadastrar</SubmitText>
+          )}
         </SubmitButton>
       </Container>
     </Background>
